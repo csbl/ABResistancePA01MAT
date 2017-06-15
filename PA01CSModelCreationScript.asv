@@ -3,34 +3,32 @@
 
 clear all
 load tmodel.mat;
-assession = string(['GDS4244';'GDS3572']);
+assession = ['GDS4244','GDS3572'];
 width = 10;
 nsamples = [12,6];
 
 for i = 1:length(nsamples)
-    
-    disp(assession(i))
 
     [CSCobraModels,errorCount,names2] = createCSModelTiger(assession(i),nsamples(i),tmodel,'width',width);
 
     for j = 1:nsamples(i)
         tempModel = CSCobraModels(j);
-        fil = sprintf('%s_%d.mat',assession(i),j);
+        fil = sprintf('%s_%d.mat',assession,i);
         save(fil,'tempModel')
     end
 end
 
-assession = string(['GSE90620';'GSE65870';'GSE30021']);
+assession = ['GSE90620','GSE65870','GSE30021'];
 fileName = strcat(assession,'_series_matrix.txt');
 width = 10;
 nsamples = [12,6,9];
 
-for i = 1:length(nsamples)
+for i = 1:length(nsamples
     [CSCobraModels,errorCount,names2] = createCSModelTiger(fileName(i),nsamples(i),tmodel,'width',width);
 
-    for j = 1:nsamples(i)
-        tempModel = CSCobraModels(j);
-        fil = sprintf('%s_%d.mat',assession(i),j);
+    for i = 1:nsamples(i)
+        tempModel = CSCobraModels(i);
+        fil = sprintf('%s_%d.mat',assession(i),i);
         save(fil,'tempModel')
     end
 end

@@ -16,6 +16,8 @@ function [CSCobraModels,errorCount,names2] = createCSModelTiger(accession,nsampl
         [names,expressor] = SOFTDataProcessor(filename,nsamples,width);%Process the soft file and fill gaps that result in naming errors
     elseif(startsWith(accession,'GSE')) %Will only work with matrix series files
         [names,expressor] = GSETXTDataProcessor(accession,width);
+    else
+        disp('Error Encountered, file was not found')
     end
     cutoff = 75;
 

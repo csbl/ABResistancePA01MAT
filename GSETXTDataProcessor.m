@@ -1,6 +1,6 @@
 function [geneNames,Expressor] = GSETXTDataProcessor(fileName,width)
 
-geoData = geoseriesread(fileName);
+geoData = geoseriesread(char(fileName));
 
 geneNames = string();
 

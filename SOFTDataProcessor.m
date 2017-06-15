@@ -10,7 +10,7 @@ function [geneNames,ExpressionData] = SOFTDataProcessor(fileName,numSamp,width)
 %   the different samples and the rows the expression level for the gene
 %   corresponding to that given in geneNames
 
-SoftData = geosoftread(fileName);
+SoftData = geosoftread(char(fileName));
 geneNames = SoftData.Data(:,2);
 ExpressionData = cell2mat(SoftData.Data(:,3:numSamp+2));
 geneNames2 =  string();
