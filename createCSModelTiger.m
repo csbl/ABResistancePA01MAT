@@ -6,8 +6,9 @@
 function [CSCobraModels,errorCount,names2] = createCSModelTiger(accession,nsamples,tmodel,varargin)
     p = inputParser;
     p.addParamValue('width',15);
+    p.addParamValue('percentile',75);
     p.parse(varargin{:});
-
+    percentile = p.Results.percentile;
     width = p.Results.width;
 
     if(startsWith(accession,'GDS') == 1)
@@ -19,7 +20,7 @@ function [CSCobraModels,errorCount,names2] = createCSModelTiger(accession,nsampl
     else
         disp('Error Encountered, file was not found')
     end
-    cutoff = 75;
+    cutoff = percentile;
 
     set_solver('gurobi');
 

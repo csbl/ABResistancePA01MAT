@@ -6,12 +6,13 @@ load tmodel.mat;
 assession = string(['GDS4244';'GDS3572']);
 width = 10;
 nsamples = [12,6];
+percent = 50;
 
 for i = 1:length(nsamples)
     
     disp(assession(i))
 
-    [CSCobraModels,errorCount,names2] = createCSModelTiger(assession(i),nsamples(i),tmodel,'width',width);
+    [CSCobraModels,errorCount,names2] = createCSModelTiger(assession(i),nsamples(i),tmodel,'width',width,'percentile',percent);
 
     for j = 1:nsamples(i)
         tempModel = CSCobraModels(j);
@@ -26,7 +27,7 @@ width = 10;
 nsamples = [12,6,9];
 
 for i = 1:length(nsamples)
-    [CSCobraModels,errorCount,names2] = createCSModelTiger(fileName(i),nsamples(i),tmodel,'width',width);
+    [CSCobraModels,errorCount,names2] = createCSModelTiger(fileName(i),nsamples(i),tmodel,'width',width,'percentile',percent);
 
     for j = 1:nsamples(i)
         tempModel = CSCobraModels(j);
