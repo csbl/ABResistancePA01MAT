@@ -1,4 +1,4 @@
-function [geneNames,ExpressionData] = SOFTDataProcessor(fileName,numSamp,width)
+function [names,express] = SOFTDataProcessor(fileName,numSamp,width,tmodel,normalFact)
 %Function to process a .soft file given by fileName with numSamp number of
 %samples.
 %fileName ='GDS3572_full.soft';
@@ -40,4 +40,24 @@ while(condition)
     numAddP = numAdd;
     numAdd = 0;
 end
+
+for j = 1:numSamp
+    for i = 1 : length(geneNames)
+         if ismember(geneNames(i),tmodel.varnames) == 0
+            ExpressionData(i,j) = -1;
+         end 
+    end
+end
+
+A = ExpressionData ~= -1;
+expresser = ExpressionData(A);
+express = vec2mat(ExpressionData(A),numSamp);
+for j = 1 : numSamp
+    express(:,j) = (express(:,j) - min(express(:,j))) ./ (prctile(express(:,j),normalFact) - min(express(:,j)));
+end
+figure;
+for i = 1 : numSamp
+    scatter(1:length(express(:,i)),express(:,i))
+end
+names = geneNames(A(:,1));
 end
