@@ -1,0 +1,22 @@
+function [score,meanDeleted,meanAdded] = testSum(allScores,states)
+
+sums = 0;
+for i = 1:5
+    sums = sums + sum(sum(states{i}./45));
+end
+sums
+mean(allScores);
+score = 0*(1147 - sums)/(1147/2) + (1147.0-sums)*((1147-sums)/(1146-sums+mean(allScores))) ;
+meanDeleted = 1146-sums;
+meanAdded = mean(allScores);
+
+a = mean(allScores);
+n = sums;
+if a < (1147-n)/3
+    v = n 
+else
+    v = n*(1-
+end
+
+
+end

@@ -3,7 +3,7 @@
 %.soft file for GEO. The script implements TIGER to form the reconstruction
 %and the cobra model is then extracted and saved as a .mat file. 
 
-function [CSCobraModels,errorCount,names2,GeneStates,GeneNames,totalScore] = createCSModelTiger(names,expressor,nsamples,tmodel,sd,varargin)
+function [CSCobraModels,errorCount,names2,GeneStates,GeneNames,totalScore] = createCSModelTiger(names,expressor,nsamples,tmodel,sd,parameter,varargin)
     p = inputParser;
     p.addParamValue('width',15);
     p.addParamValue('percentile',75);
@@ -28,7 +28,7 @@ function [CSCobraModels,errorCount,names2,GeneStates,GeneNames,totalScore] = cre
         disp('ErrorCount')
         disp(errorCount)
         
-        [states,genes,sol,tiger,totalScore(j)] =  gimme(tmodel,express,cutoff,threshName,sd,'gene_names',names2);
+        [states,genes,sol,tiger,totalScore(j)] =  gimme(tmodel,express,parameter,cutoff,threshName,sd,'gene_names',names2);
 
         if(j == 1)
             GeneStates = zeros(length(genes),nsamples);

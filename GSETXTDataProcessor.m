@@ -52,6 +52,9 @@ expresser = Expressor(A);
 express = vec2mat(expresser,numSamp);
 for j = 1 : numSamp
     express(:,j) = ((express(:,j) - min(express(:,j))) ./ (prctile(express(:,j),normalFact) - min(express(:,j))));
+    express(:,j) = express(:,j) - mean(express(:,j));
+    express(:,j) = express(:,j) .* tranformVariance(express(:,j),.1) ;
+
 end
 names = geneNames(A(:,1));
 figure;

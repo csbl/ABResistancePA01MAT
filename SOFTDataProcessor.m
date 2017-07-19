@@ -53,7 +53,9 @@ A = ExpressionData ~= -1;
 expresser = ExpressionData(A);
 express = vec2mat(ExpressionData(A),numSamp);
 for j = 1 : numSamp
-    express(:,j) = (express(:,j) - min(express(:,j))) ./ (prctile(express(:,j),normalFact) - min(express(:,j)));
+    express(:,j) = ((express(:,j) - min(express(:,j))) ./ (prctile(express(:,j),normalFact) - min(express(:,j))));
+    express(:,j) = express(:,j) - mean(express(:,j));
+    express(:,j) = express(:,j) .* tranformVariance(express(:,j),.1) ;
 end
 figure;
 for i = 1 : numSamp

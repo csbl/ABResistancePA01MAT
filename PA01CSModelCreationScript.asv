@@ -50,7 +50,7 @@ for a = parameters(1,:)
                         j= j+1;
                     end
 
-                    [score MeanDeleted(z/5) MeanAdded(z/5)] = testSum(allScores,states);
+                    [parameterResults(m,1) MeanDeleted(z/5) MeanAdded(z/5)] = testSum(allScores,states);
                     m = m +1 
                 end  
             end   
