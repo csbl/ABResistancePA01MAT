@@ -5,15 +5,15 @@ for i = 1:5
     sums = sums + sum(sum(states{i}./45));
 end
 sums
-meanDeleted = 1146-sums;
-meanAdded = mean(allScores);
+meanDeleted = 1137-sums;
+meanAdded = mean(allScores)
 
 a = mean(allScores);
-n = sums;
-if a < (1147-n)/3
+n = 1137 - sums
+if a < (1137-n)/3
     v = n; 
 else
-    v = n*(1-a/(1147/double(n)));
+    v = n*(1-a/((1137.0-n)*2));
 end
 
 end
