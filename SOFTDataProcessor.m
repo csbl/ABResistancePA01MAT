@@ -1,14 +1,18 @@
 function [names,express] = SOFTDataProcessor(fileName,numSamp,width,tmodel,normalFact)
 %Function to process a .soft file given by fileName with numSamp number of
-%samples.
-%fileName ='GDS3572_full.soft';
-%numSamp =6;
-%width = 15;
+%samples. Will return normalized and processed gene names and expression values for the sample
 %Output:
-%   geneNames : cell array of the names of the genes in the file
-%   ExpressionData: matrix of expression data where the columns repressent
+%   names : cell array of the names of the genes in the file
+%   express: matrix of expression data where the columns repressent
 %   the different samples and the rows the expression level for the gene
 %   corresponding to that given in geneNames
+%Input:
+%   fileName   name of file .soft file
+%   numSamp    number of samples in file
+%   width      width for finding matching gene labels 
+%   tmodel     tiger model to which the gene names in the sample should be
+%              matched
+%   normalFact percentile to normalize the data 
 
 SoftData = geosoftread(char(fileName));
 geneNames = SoftData.Data(:,2);
@@ -18,12 +22,11 @@ condition = 1;
 numAddP = 0;
 numAdd = 0;
 
-
+% Match sample names with model gene names assuming in a sorted order
 while(condition)
     for i =2:length(geneNames)
         if startsWith(geneNames(i-1),'PA') == 1 && max(startsWith(geneNames(i+1:i+width),'PA')) == 1 && startsWith(geneNames(i),'PA') ==0 
             temp = char(geneNames(i-1));
-            %disp(temp(3:length(temp)))
             value = str2num(temp(3:length(temp)))+1;
             value = sprintf('%04d',value);
             geneNames2(i,1) = string(['P','A',value]); 
@@ -51,13 +54,13 @@ end
 
 A = ExpressionData ~= -1;
 expresser = ExpressionData(A);
-express = vec2mat(ExpressionData(A),numSamp);
-for j = 1 : numSamp
+express = vec2mat(ExpressionData(A),numSamp);%pull out expression values for matched genes
+for j = 1 : numSamp%normalize, set mean to 0, and transform variance to .1
     express(:,j) = ((express(:,j) - min(express(:,j))) ./ (prctile(express(:,j),normalFact) - min(express(:,j))));
     express(:,j) = express(:,j) - mean(express(:,j));
     express(:,j) = express(:,j) .* tranformVariance(express(:,j),.1) ;
 end
-figure;
+figure;%plot the sample data
 for i = 1 : numSamp
     scatter(1:length(express(:,i)),express(:,i))
 end

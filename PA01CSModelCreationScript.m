@@ -11,18 +11,19 @@ nsamples = [12,6,12,6,9];
 normalFact = 75;
 
 [names,expressor,ave,sd,names2] = dataProcessor(assession,nsamples,width,tmodel,normalFact);
-%{
+save('dataProcessRes.mat','names','expressor','ave','sd','names2')
+
 %%
 parameterResults = zeros(8^4,6);
-parameters = [linspace(30,80,4);linspace(0,90,4);linspace(60,150,4);linspace(10,50,4);linspace(10,50,4)]
+parameters = [linspace(30,80,4);linspace(0,90,4);linspace(60,150,4);linspace(10,50,4);linspace(15,35,4)]
 
 %%
 m =1;
-oldscore = 0;
 for a = parameters(1,:)
     for b = parameters(2,:)
         for c = parameters(3,:)
             for d = parameters(4,:)
+                oldscore = 0;
                 for e = parameters(5,:)
                     z = [a,b,c,d,e];
                     j = 1;
@@ -58,20 +59,23 @@ for a = parameters(1,:)
                         parameterResults(m,2:end) = [a,b,c,d,e];
                         m = m +1; 
                         break;
-                    end
+                    end  
                     oldscore = score;
                 end  
             end   
         end   
     end  
 end
+save('gimmeSpaceRes.mat','parameterResults')
+
 
 %%
-%}
+
 %save('gimmeSpaceRes.mat','parameterResults')
-load gimmeSpaceRes.mat
+%load gimmeSpaceRes.mat
 [n,index] = max(parameterResults(:,1));
 z = parameterResults(index,2:6);
+%z = [80,30,60,40,23.3];
 j = 1;
 states = cell(5,1);
 genes = cell(5,1); 

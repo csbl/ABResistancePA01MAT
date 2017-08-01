@@ -1,19 +1,31 @@
 function [names,express] = GSETXTDataProcessor(fileName,width,tmodel,normalFact)
+%Function to process a GSE GEO dataset .txt file given by fileName. Will return normalized and processed gene names and expression values for the sample
+%Output:
+%   names : cell array of the names of the genes in the file
+%   express: matrix of expression data where the columns repressent
+%   the different samples and the rows the expression level for the gene
+%   corresponding to that given in geneNames
+%Input:
+%   fileName   name of file .soft file
+%   width      width for finding matching gene labels 
+%   tmodel     tiger model to which the gene names in the sample should be
+%              matched
+%   normalFact percentile to normalize the data 
 
-geoData = geoseriesread(char(fileName));
+geoData = geoseriesread(char(fileName));%read data
 
 geneNames = string();
 
 for i = 1:length(geoData.Data.RowNames)
    temp = char(geoData.Data.RowNames(i));
-   geneNames(i,1) = temp(1,1:6);
+   geneNames(i,1) = temp(1,1:6);%gather geneNames
 end
 
 condition = 1;
 numAddP = 0;
 numAdd = 0;
 j=0;
-while(condition)
+while(condition)%match samples names with model names
     for i =2:length(geneNames)
         if startsWith(geneNames(i-1),'PA') == 1 && PADownStream(geneNames,i,width) == 1 && startsWith(geneNames(i),'PA') ==0 
             value = str2num(temp(3:length(temp)))+1;
@@ -35,8 +47,8 @@ while(condition)
 end
 
 
-Expressor = double(geoData.Data);
-[~,numSamp] = size(geoData.Data);
+Expressor = double(geoData.Data);%get data
+[~,numSamp] = size(geoData.Data);%get number of samples
 
 
 for j = 1:numSamp
@@ -48,9 +60,9 @@ for j = 1:numSamp
 end
 
 A = Expressor ~= -1;
-expresser = Expressor(A);
+expresser = Expressor(A);%pull out matching expression values
 express = vec2mat(expresser,numSamp);
-for j = 1 : numSamp
+for j = 1 : numSamp%normalize, set mean to 0, transform variance to .1
     express(:,j) = ((express(:,j) - min(express(:,j))) ./ (prctile(express(:,j),normalFact) - min(express(:,j))));
     express(:,j) = express(:,j) - mean(express(:,j));
     express(:,j) = express(:,j) .* tranformVariance(express(:,j),.1) ;
